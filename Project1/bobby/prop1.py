@@ -26,3 +26,5 @@ for i in range(1,3):
     z,p = sm.stats.proportions_ztest([count1,count2],[total1,total2],0)
     print('z-stat  = {z} \np-value = {p}'.format(z=z,p=p))
     print()
+
+# dillweed
