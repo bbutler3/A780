@@ -2,7 +2,7 @@ import numpy as np
 import scipy as sp
 import statsmodels.api as sm
 
-############################## proportfile1.dat ################################
+################################## proportfile1.dat ############################################
 
 H0 = 0.6
 
