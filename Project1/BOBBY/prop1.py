@@ -7,7 +7,7 @@ import statsmodels.api as sm
 H0 = 0.6
 
 for i in range(1,3):
-    filename = 'proportfile'+str(i)+'.dat'
+    filename = '../proportfile'+str(i)+'.dat'
     print(filename+'\n---')
     c1,c2 = np.genfromtxt(filename,dtype=int,delimiter=' ',unpack=True)
 
