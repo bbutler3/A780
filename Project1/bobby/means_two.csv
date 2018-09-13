@@ -1,0 +1,3 @@
+alt,p_value,conf_low,conf_high,mean of x,mean of y
+two.sided,0.619135405311272,-0.216,0.363,0.925,0.851
+two.sided,0.000167139999217225,0.117,0.371,1.002,0.758
