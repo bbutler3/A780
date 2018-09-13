@@ -23,7 +23,9 @@
 import os
 import numpy as np
 import scipy.stats as st
+import matplotlib.pyplot as plt
 from glob import glob
+from scipy.stats import t
 #------------------------------------------------------------------------------
 
 
@@ -35,24 +37,30 @@ H0 = 0.8
 #------------------------------------------------------------------------------
 
 
+files = []
+tvals = []
+pvals = []
+diff = []
+diffr = 0
+
 for filename in glob('../*meanfiles/meanfiles*'):
     
     # Read in the data and fill vectors with the values
-    #------------------------------------------------------------------------------
-    print(filename+'\n---')
+    #--------------------------------------------------------------------------
+    #print(filename+'\n---')
     c1,c2 = np.genfromtxt(filename,dtype=np.float64,delimiter=' ',unpack=True)
-    #------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     
     
-    # Run t-test for the 1-sample mean, and the comparison of the means of the two
-    # samples.
-    #------------------------------------------------------------------------------
+    # Run t-test for the 1-sample mean, and the comparison of the means of the 
+    # two samples.
+    #--------------------------------------------------------------------------
     #t1 = st.ttest_1samp(c1,H0)
     t2 = st.ttest_ind(c1,c2)
-    #------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     
     # trying my own code to compute t
-    #------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     mean_c1 = np.mean(c1)
     mean_c2 = np.mean(c2)
     
@@ -60,12 +68,12 @@ for filename in glob('../*meanfiles/meanfiles*'):
     stde_c2 = np.std(c2)
     
     #t = (mean_c1 - H0)/(stde_c1/np.sqrt(len(c1)))
-    #------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     
     
     
     # Print output
-    #------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
    # print('H0: mean =',H0)
    # print('t-stat = ',t1[0])
    # print('my t-stat = ',t)
@@ -73,7 +81,45 @@ for filename in glob('../*meanfiles/meanfiles*'):
     
    # print('-----------------')
     
-    print('H0: mean1 = mean2')
-    print('t-stat = ',t2[0])
-    print('p-value = ',t2[1])
-    #------------------------------------------------------------------------------
+    #print('H0: mean1 = mean2')
+    #print('t-stat = ',t2[0])
+    #print('p-value = ',t2[1])
+    
+    #files.append(filename)
+    
+    if t2[1] < 0.05: diffr = 1
+    if t2[1] > 0.05: diffr = 0
+    
+    files.append(str(filename).split('/')[2])
+    tvals.append(t2[0])
+    pvals.append(t2[1])
+    diff.append(diffr)
+    #--------------------------------------------------------------------------
+
+
+
+col1 = np.array(files)
+col2 = np.array(tvals)
+col3 = np.array(pvals)
+col4 = np.array(diff)
+
+df = pd.DataFrame({'file':col1,'t-value':col2,'p-value':col3,'different':col4})
+
+
+
+#df.to_csv('MeanTests.csv')
+
+
+fig, ax = plt.subplots(1, 1)
+
+df = 99
+mean, var, skew, kurt = t.stats(df, moments='mvsk')
+
+x = np.linspace(t.ppf(0.01, df),
+                t.ppf(0.99, df), 100)
+
+rv = t(df)
+ax.plot(x, rv.pdf(x), 'r-', lw=1, label='frozen pdf')
+
+
+plt.show()
