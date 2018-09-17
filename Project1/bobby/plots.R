@@ -15,13 +15,15 @@ for (l in letters){
   av = (df[['conf_high']]+df[['conf_low']])/2
   
   pdf(paste('plots/',l,'_hist.pdf',sep=''),width=8,height=6)
+  par(cex.lab=1.2,cex.main=1.4,family="Helvetica",mar=c(4,4,3,2)+0.1)
   fillcolors = c('cornflowerblue',rep('white',19)) # sets first bar to be filled
-  hist(df[['p_value']],breaks=20,main = paste("Histogram of p-values -",l),
-       col = fillcolors, border = 'cornflowerblue',xlab = 'p-value')
+  hist(df[['p_value']],breaks=20, col = fillcolors, border = 'cornflowerblue', main = '', xlab = '', ylab='')
+  title(main = paste("Histogram of p-values -",l), line=1.2)
+  title(xlab = 'p-value', ylab = 'Frequency', line=2.4)
   dev.off()
   
   pdf(paste('plots/',l,'_CI.pdf',sep=''),width=8,height=5)
-  par(cex.lab=1.2,cex.main=1.4,family="Helvetica",mar=c(4,4,3,2)+0.1) # mai=c(1,0.8,0.52,0.2)
+  par(cex.lab=1.2,cex.main=1.4,family="Helvetica",mar=c(4,4,3,2)+0.1)
   colorif = ifelse((av-iw) > 0 | (av+iw) < 0,'red','black')
   plotCI(seqind,av,uiw=iw,pch=NA,sfrac=0,col=colorif,xlab="",ylab="")
   abline(h=0,col="blue")
