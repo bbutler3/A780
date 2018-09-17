@@ -5,7 +5,7 @@ letters = c("A","B","C","D","E")
 for (l in letters){
   path = paste('../',l,'-meanfiles/meanfiles',l,'*',sep='')
   file_names = Sys.glob(path)
-  #file_names = mixedsort(file_names)
+  file_names = mixedsort(file_names)
   
   df <- lapply(file_names,function(x){read.delim(x,sep=' ',header=FALSE)})
   
