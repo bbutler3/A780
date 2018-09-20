@@ -10,6 +10,7 @@ nlist = seq(10,1000,10)
 
 means = list()
 powers = list()
+lens = list()
 
 for (n in nlist){
   sub1 = as.data.frame(matrix(rnorm(100*n,1,1),n,100))
@@ -36,9 +37,10 @@ for (n in nlist){
   
   powertest = pwr.t.test(n=n,d=effsize,sig.level=alpha,type='two.sample',alternative='two.sided')
   powers <- append(powers,powertest$power)
+  lens <- append(lens,length(sigdiffs[[1]]))
 } 
 
-df <- as.data.frame(cbind(nlist,means,powers))
+df <- as.data.frame(cbind(nlist,means,powers,lens))
 
 ### means plot
 pdf('plots/means_vs_n.pdf',width=8,height=5)
@@ -55,7 +57,8 @@ dev.off()
 pdf('plots/means_vs_powers.pdf',width=8,height=5)
 par(las=1)
 par(cex.lab=1.2,cex.main=1.4,family="Helvetica",mar=c(4,4,3,2)+0.1)
-plot(df$powers,df$means,main='',xlab='',ylab='',col='blue')
+plot(df$powers,df$means,main='',xlab='',ylab='',col='blue',
+     panel.first=abline(h=-0.2,col="red"))
 title(main='Statistically Significant Mean Differences vs. Power',line=1.2)
 title(ylab='Mean of Significant Mean Differences',line=3)
 title(xlab='Power',line=2.4)
