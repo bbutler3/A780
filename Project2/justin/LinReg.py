@@ -113,7 +113,7 @@ yfit2 = slope2 * xfit + intercept2
 
 # Weighted Linear Least Squares Regression
 #------------------------------------------------------------------------------
-AbsRes = abs(y2 - y)
+AbsRes = abs(y2 - yfit2)
 slope3, intercept3, r_value3, p_value3, std_err3 = st.linregress(x,AbsRes)
 yfit3 = slope3 * xfit + intercept3
 
