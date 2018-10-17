@@ -1,4 +1,6 @@
-set.seed(2)
+library(knitr)
+
+set.seed(68)
 
 m = 2
 l = 100
@@ -28,9 +30,30 @@ w = 1/yfitres
 weightreg = lm(yvar ~ x,datavar,weights=w)
 weightfit = weightreg$coefficients[2]*x + weightreg$coefficients[1]
 
-#plot(x,y)
-#lines(x,yfit,col='red')
+pdf('plots/constsigma.pdf',width=8,height=8)
+par(cex.lab=1.2,cex.main=1.4,cex.axis=1.2,family="Helvetica",mar=c(4,4.5,3,1)+0.1)
+plot(x,y,pch=20,col='blue',las=1,main='',xlab='',ylab='')
+lines(x,yfit)
+title(main=expression(paste('Constant ',sigma)),line=1.2)
+title(ylab='y',line=3.4)
+title(xlab='x',line=2.6)
+dev.off()
 
-plot(x,yvar)
-lines(x,yfitvar,col='blue')
-lines(x,weightfit,col='red',lty='dashed')
+pdf('plots/varsigma.pdf',width=8,height=8)
+par(cex.lab=1.2,cex.main=1.4,cex.axis=1.2,family="Helvetica",mar=c(4,4.5,3,1)+0.1)
+plot(x,yvar,pch=20,col='red',las=1,main='',xlab='',ylab='')
+lines(x,yfitvar)
+lines(x,weightfit,col='gray30',lty='dashed')
+title(main=expression(paste('Variable ',sigma)),line=1.2)
+title(ylab='y',line=3.4)
+title(xlab='x',line=2.6)
+dev.off()
+
+pdf('plots/heteroscedasticity.pdf',width=8,height=8)
+par(cex.lab=1.2,cex.main=1.4,cex.axis=1.2,family="Helvetica",mar=c(4,4.5,3,1)+0.1)
+plot(x,abs(regvar$residuals),pch=20,col='forestgreen',las=1,main='',xlab='',ylab='')
+lines(x,yfitres)
+title(main='Heteroscedasticity Check',line=1.2)
+title(ylab='|residuals|',line=3.4)
+title(xlab='x',line=2.6)
+dev.off()
